@@ -1,30 +1,222 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to Vue</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta name="format-detection" content="telephone=no">
+
+  <title>VueJS Learning Project</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
   <div id="app">
-    <h1>{{ greeting }}</h1>
+    <div class="container">
+      <h1>{{ greeting }}</h1>
+
+      <div class="table-section">
+        <div class="table-header">
+          <h2>Список пользователей</h2>
+          <p>Всего {{ usersCount }} пользователей</p>
+        </div>
+        <div class="table-content" v-show="displayTable">
+          <table>
+            <tr>
+              <th>Фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Аватар</th>
+            </tr>
+
+            <template v-for="user in users">
+              <tr >
+                <td class="w30">{{ user.fname | Capitalize }}</td>
+                <td class="w30">{{ user.lname | Capitalize }}</td>
+                <td class="w30">{{ user.sname | Capitalize }}</td>
+                <td class="w10">
+                  <div class="img-holder">
+                    <img :src="user.avatar" alt="">
+                  </div>
+                </td>
+              </tr>
+            </template>
+          </table>
+        </div>
+        <div class="table-footer">
+          <input type="button" :value="tableTogglerName()" @click="toggleTableVisibility()">
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+    function getRandomAvatar() {
+      return "http://i.pravatar.cc/100?img=" + getRandomInt(1,50);
+    }
+
     var app = new Vue({
       el: '#app',
       data: function () {
         return {
-          greeting: 'Welcome to your Vue.js app!',
+          greeting: 'Учим VueJS - Урок 1',
           users: [
             {
-
-            }
-          ]
+              "fname": "гусин",
+              "lname": "Иван",
+              "sname": "Николаевич",
+              "avatar": ''
+            },
+            {
+              "fname": "Лаптев",
+              "lname": "Григорий",
+              "sname": "Иванович",
+              "avatar": ''
+            },
+            {
+              "fname": "карпюк",
+              "lname": "Дмитрий",
+              "sname": "Павлович",
+              "avatar": ''
+            },
+            {
+              "fname": "Комарова",
+              "lname": "Галина",
+              "sname": "Павловна",
+              "avatar": ''
+            },
+            {
+              "fname": "Затурина",
+              "lname": "Наталья",
+              "sname": "Ивановна",
+              "avatar": ''
+            },
+          ],
+          displayTable: true
         }
       },
+      created() {
+        this.users.forEach(function(el){
+          if ( getRandomInt(0,100)>=50 ) {
+            el.avatar = getRandomAvatar();
+          } else {
+            el.avatar = 'assets/img/avatar-placeholder.png';
+          }
+        })
+      },
       methods: {
+        tableTogglerName() {
+          return this.displayTable ? 'Скрыть таблицу' : 'Отобразить таблицу'
+        },
+        toggleTableVisibility() {
+          this.displayTable = !this.displayTable;
+        }
+      },
+      computed: {
+        usersCount: {
+          get: function () {
+            return this.users.length
+          }
+        }
+      },
+      filters: {
+        Capitalize(value) {
+          return value.charAt(0).toUpperCase() + value.slice(1);
+        }
       }
     })
   </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .w10 {
+      width: 10%;
+    }
+    .w25 {
+      width: 25%;
+    }
+    .w30 {
+      width: 30%;
+    }
+
+    table {
+      table-layout: fixed;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    table tr th {
+      padding: 10px 10px 20px;
+    }
+
+    table tr td {
+      padding: 5px 10px;
+    }
+
+    table tr th, table tr td {
+      border: 1px solid #ccc;
+    }
+
+    table tr:first-child th {
+      border-top: none;
+    }
+
+    table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table tr td:first-child, table tr th:first-child {
+      border-left: none;
+    }
+
+    table tr td:last-child, table tr th:last-child {
+      border-right: none;
+    }
+
+    table tr:hover td {
+      background: rgba(0,0,0,.1);
+    }
+
+    .img-holder {
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    .img-holder img {
+      display: inline-block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .table-footer {
+      padding: 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+
+  </style>
 </body>
 </html>
