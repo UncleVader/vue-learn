@@ -7,7 +7,12 @@
   <meta name="format-detection" content="telephone=no">
 
   <title>VueJS Learning Project</title>
+
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/v-copy@0.1.0/dist/v-copy.min.js"></script>
+  <script src="https://unpkg.com/v-tooltip"></script>
+
 </head>
 <body>
   <div id="app">
@@ -26,6 +31,7 @@
               <th>Имя</th>
               <th>Отчество</th>
               <th>Аватар</th>
+              <th><i class="material-icons">accessibility_new</i></th>
             </tr>
 
             <template v-for="user in users">
@@ -35,15 +41,19 @@
                 <td class="w30">{{ user.sname | Capitalize }}</td>
                 <td class="w10">
                   <div class="img-holder">
-                    <img :src="user.avatar" alt="">
+                    <img :src="userAvatar(user)" alt="">
                   </div>
                 </td>
+                <td class="w10"><button v-copy="userAsString(user)"class="material-icons">assignment_turned_in</button></td>
               </tr>
             </template>
           </table>
         </div>
         <div class="table-footer">
-          <input type="button" :value="tableTogglerName()" @click="toggleTableVisibility()">
+          <button type="button"
+                  @click="toggleTableVisibility"
+                  v-tooltip="'Кнопка для управления видимостью таблицы'"
+          >{{tableTogglerName}}</button>
         </div>
       </div>
     </div>
@@ -68,7 +78,7 @@
               "fname": "гусин",
               "lname": "Иван",
               "sname": "Николаевич",
-              "avatar": ''
+              "avatar": getRandomAvatar()
             },
             {
               "fname": "Лаптев",
@@ -80,7 +90,7 @@
               "fname": "карпюк",
               "lname": "Дмитрий",
               "sname": "Павлович",
-              "avatar": ''
+              "avatar": getRandomAvatar()
             },
             {
               "fname": "Комарова",
@@ -92,34 +102,29 @@
               "fname": "Затурина",
               "lname": "Наталья",
               "sname": "Ивановна",
-              "avatar": ''
+              "avatar": getRandomAvatar()
             },
           ],
           displayTable: true
         }
       },
-      created() {
-        this.users.forEach(function(el){
-          if ( getRandomInt(0,100)>=50 ) {
-            el.avatar = getRandomAvatar();
-          } else {
-            el.avatar = 'assets/img/avatar-placeholder.png';
-          }
-        })
-      },
       methods: {
-        tableTogglerName() {
-          return this.displayTable ? 'Скрыть таблицу' : 'Отобразить таблицу'
-        },
         toggleTableVisibility() {
           this.displayTable = !this.displayTable;
+        },
+        userAvatar: function(user) {
+          return user.avatar || 'assets/img/avatar-placeholder.png';
+        },
+        userAsString: function (user) {
+          return user.lname + ' ' + user.fname + ' ' + user.sname;
         }
       },
       computed: {
-        usersCount: {
-          get: function () {
-            return this.users.length
-          }
+        usersCount: function() {
+          return this.users.length
+        },
+        tableTogglerName: function() {
+          return this.displayTable ? 'Скрыть таблицу' : 'Отобразить таблицу'
         }
       },
       filters: {
@@ -128,6 +133,8 @@
         }
       }
     })
+
+
   </script>
 
   <style>
