@@ -19,24 +19,16 @@
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
 
-  <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-  <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 </head>
 <body>
   <div id="app">
-    <b-container>
-      <b-tabs v-model="pageIndex">
-        <b-tab active>
-          <h1>{{ greeting }}</h1>
-          <users-list v-bind:users="users"></users-list>
-        </b-tab>
-        <b-tab>
-          <br>I'm the second tab content
-        </b-tab>
-      </b-tabs>
-    </b-container>
+    <div class="container">
+      <h1>{{ greeting }}</h1>
+
+      <users-list v-bind:users="users"></users-list>
+
+    </div>
 
   </div>
 
@@ -55,7 +47,6 @@
               <th>Отчество</th>
               <th>Аватар</th>
               <th><i class="material-icons">accessibility_new</i></th>
-              <th><i class="material-icons">settings_ethernet</i></th>
             </tr>
 
             <template v-for="user in users">
@@ -68,8 +59,7 @@
                     <img :src="userAvatar(user)" alt="">
                   </div>
                 </td>
-                <td class="w10"><button v-copy="userAsString(user)" class="material-icons">assignment_turned_in</button></td>
-                <td class="w10"><button v-on:click="pageIndex=1" class="material-icons">create</button></td>
+                <td class="w10"><button v-copy="userAsString(user)"class="material-icons">assignment_turned_in</button></td>
               </tr>
             </template>
           </table>
@@ -106,24 +96,10 @@
           required: true
         }
       },
-      created: function() {
-        this.fetchData()
-      },
       mounted: function () {
         console.log('Component mounted', this);
       },
       methods: {
-        fetchData: function () {
-          axios.get('http://localhost:3000/users/')
-            .then( (response)=> {
-              console.log('Данные получены',response);
-              this.users = response.data;
-            })
-            .catch( (error)=> {
-              console.log('Ошибка получения данных',error);
-            });
-
-        },
         toggleTableVisibility() {
           this.displayTable = !this.displayTable;
         },
@@ -133,9 +109,6 @@
         userAsString: function (user) {
           return user.lname + ' ' + user.fname + ' ' + user.sname;
         },
-        editUser: function (user) {
-
-        }
       },
       computed: {
         usersCount: function() {
@@ -162,6 +135,22 @@
           greeting: 'Учим VueJS - Урок 2',
           users: [],
           displayTable: true
+        }
+      },
+      created: function() {
+        this.fetchData()
+      },
+      methods: {
+        fetchData: function () {
+          axios.get('http://localhost:3000/users/')
+            .then( (response)=> {
+              console.log('Данные получены',response);
+              this.users = response.data;
+            })
+            .catch( (error)=> {
+              console.log('Ошибка получения данных',error);
+            });
+
         }
       },
     })
