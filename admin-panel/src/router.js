@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from './components/HelloWorld'
-import UsersList from './components/UsersList'
-import UserCard from './components/UserCard'
+import HelloWorld from '@/components/HelloWorld'
+import UsersList from '@/views/UsersList'
+import UserCard from '@/views/UserCard'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  // linkActiveClass: 'active',
+  linkActiveClass: 'active',
   routes: [
     {
       path: '/',
@@ -26,7 +26,7 @@ export default new Router({
       component: UserCard,
       props: {
         guid: String
-      },
+      }
     }
   ]
 })

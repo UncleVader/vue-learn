@@ -74,6 +74,7 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: {
+      default: '',
       type: String,
       required: false
     }

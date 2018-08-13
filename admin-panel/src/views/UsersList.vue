@@ -29,8 +29,9 @@
         <template 
           slot="edit" 
           slot-scope="data">
-          <b-link :to="{ name: 'user', params: { guid: data.item.guid }}"><vue-material-icon
-            :size="32" 
+          <b-link to="user"
+                  :guid="data.item.guid"><vue-material-icon
+                  :size="32"
             name="create" /></b-link>
         </template>
       </b-table>
@@ -49,16 +50,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+import db from '@/services/db'
 
 export default {
   name: 'UsersList',
   filters: {
     Capitalize(value) {
-      return value.charAt(0).toUpperCase() + value.slice(1)
+      return value ? value.charAt(0).toUpperCase() + value.slice(1) : ''
     }
   },
-  props: {},
   data: function() {
     return {
       users: [],
@@ -103,8 +103,7 @@ export default {
   },
   methods: {
     fetchData: function() {
-      axios
-        .get('http://localhost:3000/users/')
+      db.get('/users')
         .then(response => {
           console.log('Данные получены', response)
           this.users = response.data
@@ -120,7 +119,6 @@ export default {
       return user.picture || 'assets/img/avatar-placeholder.png'
     },
     userAsString: function(user) {
-      // console.log(user);
       return user.name.last + ' ' + user.name.first
     },
     editUser: function(user) {
