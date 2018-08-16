@@ -24,9 +24,7 @@ export default new Router({
       path: '/user/:guid',
       name: 'user',
       component: UserCard,
-      props: {
-        guid: String
-      }
+      props: true
     }
   ]
 })

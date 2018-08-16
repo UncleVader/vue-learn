@@ -29,10 +29,12 @@
         <template 
           slot="edit" 
           slot-scope="data">
-          <b-link to="user"
-                  :guid="data.item.guid"><vue-material-icon
-                  :size="32"
-            name="create" /></b-link>
+          <span>{{ data.item.guid }}</span>
+          <router-link
+            :to="{ name: 'user', params: { guid: data.item.guid }}"
+          ><vue-material-icon
+            :size="32"
+            name="create" /></router-link>
         </template>
       </b-table>
 
