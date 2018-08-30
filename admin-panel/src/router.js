@@ -2,12 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import UsersList from '@/views/UsersList'
-import UserCard from '@/views/UserCard'
+import EditUserPage from '@/views/Edit'
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   linkActiveClass: 'active',
   routes: [
     {
@@ -21,9 +21,9 @@ export default new Router({
       component: UsersList
     },
     {
-      path: '/user/:guid',
-      name: 'user',
-      component: UserCard,
+      name: 'edit',
+      path: '/edit/:id',
+      component: EditUserPage,
       props: true
     }
   ]

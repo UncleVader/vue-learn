@@ -15,9 +15,11 @@
         <template 
           slot="picture" 
           slot-scope="data">
-          <img 
-            :src="data.value" 
-            alt="">
+          <div class="img-holder">
+            <img
+              :src="data.value"
+              alt="">
+          </div>
         </template>
         <template 
           slot="copy" 
@@ -29,12 +31,11 @@
         <template 
           slot="edit" 
           slot-scope="data">
-          <span>{{ data.item.guid }}</span>
-          <router-link
-            :to="{ name: 'user', params: { guid: data.item.guid }}"
+          <b-link
+            :to="{name: 'edit', params: { id: parseInt(data.item.id,10) }}"
           ><vue-material-icon
             :size="32"
-            name="create" /></router-link>
+            name="create" /></b-link>
         </template>
       </b-table>
 
@@ -68,11 +69,11 @@ export default {
       fields: [
         {
           label: 'Имя',
-          key: 'name.first'
+          key: 'firstName'
         },
         {
           label: 'Фамилия',
-          key: 'name.last'
+          key: 'lastName'
         },
         {
           label: 'Аватар',
@@ -98,10 +99,7 @@ export default {
     }
   },
   created: function() {
-    this.fetchData()
-  },
-  mounted: function() {
-    console.log('Component mounted', this)
+    this.fetchData()``
   },
   methods: {
     fetchData: function() {
@@ -121,7 +119,7 @@ export default {
       return user.picture || 'assets/img/avatar-placeholder.png'
     },
     userAsString: function(user) {
-      return user.name.last + ' ' + user.name.first
+      return user.lastName + ' ' + user.firstName
     },
     editUser: function(user) {
       console.log('Edit user method called', user)
@@ -170,6 +168,13 @@ table {
 .img-holder {
   border-radius: 50%;
   overflow: hidden;
+  width: 100px;
+  height: 100px;
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
 }
 .table-header {
   display: flex;

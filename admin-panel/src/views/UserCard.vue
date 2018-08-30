@@ -6,7 +6,7 @@
         <label for="fname">Имя</label>
         <input
           id="fname"
-          v-model="userData.name.first"
+          v-model="userData.firstName"
           type="text"
           name="fname"
           class="form-control">
@@ -15,7 +15,7 @@
         <label for="fname">Фамилия</label>
         <input
           id="lname"
-          v-model="userData.name.last"
+          v-model="userData.lastName"
           type="text"
           name="lname"
           class="form-control">
